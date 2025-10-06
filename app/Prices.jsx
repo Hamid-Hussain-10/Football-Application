@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,15 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+
+const { width } = Dimensions.get("window");
 
 export default function Prices() {
   const [prizes, setPrizes] = useState([]);
@@ -39,7 +45,6 @@ export default function Prices() {
 
     const updated = [...prizes, newPrize];
     savePrizes(updated);
-
     setPlace("");
     setReward("");
   };
@@ -50,90 +55,133 @@ export default function Prices() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Tournament Prizes</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#f8f9f8" }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.container}>
+          <Text style={styles.header}>Tournament Prizes</Text>
 
-      <View style={styles.form}>
-        <TextInput
-          value={place}
-          onChangeText={setPlace}
-          placeholder="Enter place (e.g. 1st Place)"
-          style={styles.input}
-        />
-        <TextInput
-          value={reward}
-          onChangeText={setReward}
-          placeholder="Enter reward (e.g. Gold Trophy)"
-          style={styles.input}
-        />
-        <TouchableOpacity style={styles.addBtn} onPress={addPrize}>
-          <Ionicons name="add-circle" size={22} color="#fff" />
-          <Text style={styles.btnText}>Add Prize</Text>
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        data={prizes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Ionicons name="trophy" size={22} color="#9f0703" />
-            <View style={styles.textContainer}>
-              <Text style={styles.place}>{item.place}</Text>
-              <Text style={styles.reward}>{item.reward}</Text>
-            </View>
-            <TouchableOpacity onPress={() => deletePrize(item.id)}>
-              <Ionicons name="trash" size={18} color="#9f0703" />
+          <View style={styles.form}>
+            <TextInput
+              value={place}
+              onChangeText={setPlace}
+              placeholder="Enter place (e.g. 1st Place)"
+              style={styles.input}
+              placeholderTextColor="#777"
+            />
+            <TextInput
+              value={reward}
+              onChangeText={setReward}
+              placeholder="Enter reward (e.g. Gold Trophy)"
+              style={styles.input}
+              placeholderTextColor="#777"
+            />
+            <TouchableOpacity style={styles.addBtn} onPress={addPrize}>
+              <Ionicons name="add-circle" size={22} color="#fff" />
+              <Text style={styles.btnText}>Add Prize</Text>
             </TouchableOpacity>
           </View>
-        )}
-      />
-    </View>
+
+          <FlatList
+            data={prizes}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <Ionicons name="trophy" size={22} color="#9f0703" />
+                <View style={styles.textContainer}>
+                  <Text style={styles.place}>{item.place}</Text>
+                  <Text style={styles.reward}>{item.reward}</Text>
+                </View>
+                <TouchableOpacity onPress={() => deletePrize(item.id)}>
+                  <Ionicons name="trash" size={18} color="#9f0703" />
+                </TouchableOpacity>
+              </View>
+            )}
+            contentContainerStyle={{ paddingBottom: 30 }}
+            scrollEnabled={false}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8f9f8", padding: 16 },
+  container: {
+    flex: 1,
+    paddingHorizontal: width * 0.05,
+    paddingTop: 20,
+  },
   header: {
-    fontSize: 22,
+    fontSize: width * 0.05,
     fontWeight: "bold",
     color: "#9f0703",
-    marginBottom: 16,
+    marginBottom: 18,
     textAlign: "center",
   },
-  form: { marginBottom: 20 },
+  form: {
+    marginBottom: 20,
+  },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
+    borderColor: "#a5da64",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     marginBottom: 10,
     backgroundColor: "#fff",
+    fontSize: width * 0.04,
   },
   addBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#9f0703",
-    padding: 12,
-    borderRadius: 8,
     justifyContent: "center",
+    backgroundColor: "#9f0703",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    maxWidth: 150,
+    alignSelf: "center",
+    marginTop: 5,
   },
-  btnText: { color: "#fff", marginLeft: 6, fontWeight: "bold" },
+  btnText: {
+    color: "#fff",
+    marginLeft: 6,
+    fontWeight: "500",
+    fontSize: width * 0.04,
+  },
   card: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fff",
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     marginVertical: 6,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
+    borderRadius: 12,
+    shadowColor: "#3c9c10",
+    shadowOpacity: 0.08,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
     elevation: 2,
-    justifyContent: "space-between",
   },
-  textContainer: { marginLeft: 10, flex: 1 },
-  place: { fontSize: 16, fontWeight: "bold", color: "#333" },
-  reward: { fontSize: 14, color: "#666" },
+  textContainer: {
+    marginLeft: 10,
+    flex: 1,
+  },
+  place: {
+    fontSize: width * 0.045,
+    fontWeight: "400",
+    color: "#222",
+  },
+  reward: {
+    fontSize: width * 0.04,
+    color: "#666",
+  },
 });

@@ -8,9 +8,14 @@ import {
   FlatList,
   Alert,
   TextInput,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Matches() {
   const [matches, setMatches] = useState([]);
@@ -45,10 +50,7 @@ export default function Matches() {
       aspect: [1, 1],
       quality: 1,
     });
-
-    if (!result.canceled) {
-      return result.assets[0].uri;
-    }
+    if (!result.canceled) return result.assets[0].uri;
     return null;
   };
 
@@ -79,8 +81,6 @@ export default function Matches() {
     const updated = [...matches, newMatch];
     setMatches(updated);
     saveMatches(updated);
-
-    // clear inputs
     setHomeName("");
     setAwayName("");
   };
@@ -156,13 +156,16 @@ export default function Matches() {
         style={styles.deleteBtn}
         onPress={() => deleteMatch(item.id)}
       >
-        <Text style={styles.deleteText}>x</Text>
+        <Text style={styles.deleteText}>×</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
       <View style={styles.nameRow}>
         <TextInput
           style={styles.nameInput}
@@ -192,84 +195,122 @@ export default function Matches() {
         data={matches}
         keyExtractor={(item) => item.id}
         renderItem={renderMatch}
-        contentContainerStyle={{ padding: 10 }}
+        contentContainerStyle={{ paddingBottom: height * 0.12 }}
         showsVerticalScrollIndicator={false}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8f9f8", padding: 5 },
+  container: {
+    flex: 1,
+    backgroundColor: "#f8f9f8",
+    paddingHorizontal: width * 0.03,
+    paddingTop: height * 0.015,
+  },
   nameRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
-    marginBottom: 8,
-    marginTop: 3,
+    marginBottom: height * 0.015,
   },
   nameInput: {
     flex: 1,
     borderWidth: 1,
     borderColor: "#0c5702",
     borderRadius: 8,
-    padding: 8,
-    marginHorizontal: 5,
+    paddingVertical: height * 0.012,
+    paddingHorizontal: width * 0.03,
     backgroundColor: "#fff",
+    marginHorizontal: width * 0.01,
+    fontSize: width * 0.037,
   },
   btnRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 5,
+    marginBottom: height * 0.02,
+    paddingHorizontal: width * 0.03,
   },
   addBtn: {
     backgroundColor: "#0c5702",
-    borderRadius: 20,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
-    width: 40,
-    height: 40,
+    width: width * 0.1,
+    height: width * 0.1,
   },
-  addBtnText: { color: "#f8f9f8", fontSize: 18, fontWeight: "bold" },
+  addBtnText: {
+    color: "#fff",
+    fontSize: width * 0.06,
+    fontWeight: "bold",
+  },
   clearBtn: {
     backgroundColor: "#b31616",
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    borderRadius: 6,
+    paddingVertical: height * 0.01,
+    paddingHorizontal: width * 0.04,
+    borderRadius: 20,
   },
-  clearBtnText: { color: "#f8f9f8", fontWeight: "bold", fontSize: 10 },
+  clearBtnText: {
+    color: "#fff",
+    fontWeight: "500",
+    fontSize: width * 0.03,
+  },
   matchCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
     backgroundColor: "#f8f9f8",
-    padding: 15,
-    marginVertical: 6,
+    padding: height * 0.02,
+    marginVertical: height * 0.008,
     borderRadius: 26,
     borderTopLeftRadius: 0,
     borderBottomRightRadius: 0,
-    elevation: 3,
-    position: "relative",
     borderWidth: 1,
     borderColor: "#58a44e",
+    elevation: 3,
+    position: "relative",
   },
-  teamBlock: { alignItems: "center", width: 80 },
-  teamLogo: { width: 50, height: 50, borderRadius: 25, marginBottom: 4 },
-  teamName: { fontSize: 12, fontWeight: "bold", textAlign: "center" },
-  vsText: { fontSize: 16, fontWeight: "bold", color: "#0c5702" },
-  deleteBtn: { position: "absolute", top: 5, right: 10 },
-  deleteText: { fontSize: 16, color: "#b31616" },
+  teamBlock: {
+    alignItems: "center",
+    width: width * 0.22,
+  },
+  teamLogo: {
+    width: width * 0.12,
+    height: width * 0.12,
+    borderRadius: width * 0.06,
+    marginBottom: height * 0.004,
+  },
+  teamName: {
+    fontSize: width * 0.033,
+    fontWeight: "400",
+    textAlign: "center",
+  },
+  vsText: {
+    fontSize: width * 0.04,
+    fontWeight: "500",
+    color: "#0c5702",
+  },
   scoreInput: {
-    width: 40,
-    height: 30,
+    width: width * 0.1,
+    height: height * 0.04,
     borderWidth: 1,
     borderColor: "#0c5702",
     borderRadius: 6,
     textAlign: "center",
-    marginHorizontal: 5,
-    padding: 0,
+    marginHorizontal: width * 0.02,
+    paddingVertical: width * 0.02,
     backgroundColor: "#fff",
+    fontSize: width * 0.04,
+  },
+  deleteBtn: {
+    position: "absolute",
+    top: height * 0.005,
+    right: width * 0.03,
+  },
+  deleteText: {
+    fontSize: width * 0.05,
+    color: "#b31616",
+    fontWeight: "bold",
   },
 });

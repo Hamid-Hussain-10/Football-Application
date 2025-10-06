@@ -7,8 +7,13 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Dimensions,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useRouter } from "expo-router";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Home() {
   const [tournamentName, setTournamentName] = useState("");
@@ -28,86 +33,92 @@ export default function Home() {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContainer}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ flex: 1 }}
     >
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("../assets/images/Home.png")}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={styles.mainContainer}>
-          <Text style={styles.contentText}>Add Tournament Details</Text>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Tournament Name"
-              placeholderTextColor="#777"
-              style={styles.input}
-              value={tournamentName}
-              onChangeText={setTournamentName}
-            />
-            <TextInput
-              placeholder="Tournament Venue"
-              placeholderTextColor="#777"
-              style={styles.input}
-              value={venue}
-              onChangeText={setVenue}
-            />
-            <TextInput
-              placeholder="Number of Teams"
-              placeholderTextColor="#777"
-              style={styles.input}
-              value={teams}
-              onChangeText={setTeams}
-              keyboardType="numeric"
-            />
-            <TextInput
-              placeholder="Start Date"
-              keyboardType="numeric"
-              placeholderTextColor="#777"
-              style={styles.input}
-              value={startDate}
-              onChangeText={setStartDate}
-            />
-            <TextInput
-              placeholder="End Date"
-              keyboardType="numeric"
-              placeholderTextColor="#777"
-              style={styles.input}
-              value={endDate}
-              onChangeText={setEndDate}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <View style={styles.container}>
+          {/* Header Image */}
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../assets/images/Home.png")}
+              style={styles.image}
+              resizeMode="cover"
             />
           </View>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={[styles.button, styles.saveButton]}
-              onPress={() =>
-                router.push({
-                  pathname: "./(tabs)/TournamentDetails",
-                  params: { tournamentName, venue, teams, startDate, endDate },
-                })
-              }
-            >
-              <Text style={styles.buttonText}>Save Tournament</Text>
-            </TouchableOpacity>
+          {/* Form Section */}
+          <View style={styles.mainContainer}>
+            <Text style={styles.contentText}>Add Tournament Details</Text>
 
-            <TouchableOpacity
-              style={[styles.button, styles.clearButton]}
-              onPress={clearAll}
-            >
-              <Text style={styles.buttonText}>Clear All</Text>
-            </TouchableOpacity>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Tournament Name"
+                placeholderTextColor="#777"
+                style={styles.input}
+                value={tournamentName}
+                onChangeText={setTournamentName}
+              />
+              <TextInput
+                placeholder="Tournament Venue"
+                placeholderTextColor="#777"
+                style={styles.input}
+                value={venue}
+                onChangeText={setVenue}
+              />
+              <TextInput
+                placeholder="Number of Teams"
+                placeholderTextColor="#777"
+                style={styles.input}
+                value={teams}
+                onChangeText={setTeams}
+                keyboardType="numeric"
+              />
+              <TextInput
+                placeholder="Start Date"
+                placeholderTextColor="#777"
+                style={styles.input}
+                value={startDate}
+                onChangeText={setStartDate}
+              />
+              <TextInput
+                placeholder="End Date"
+                placeholderTextColor="#777"
+                style={styles.input}
+                value={endDate}
+                onChangeText={setEndDate}
+              />
+            </View>
+
+            {/* Buttons */}
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={[styles.button, styles.saveButton]}
+                onPress={() =>
+                  router.push({
+                    pathname: "/(tabs)/TournamentDetails",
+                    params: { tournamentName, venue, teams, startDate, endDate },
+                  })
+                }
+              >
+                <Text style={styles.buttonText}>Save Tournament</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, styles.clearButton]}
+                onPress={clearAll}
+              >
+                <Text style={styles.buttonText}>Clear All</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -115,13 +126,14 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     backgroundColor: "#f8f9f8",
+    paddingBottom: height * 0.05,
   },
   container: {
     flex: 1,
   },
   imageContainer: {
     width: "100%",
-    height: 220,
+    height: height * 0.28,
     overflow: "hidden",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -131,33 +143,34 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   mainContainer: {
-    marginTop: 15,
+    marginTop: height * 0.02,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: width * 0.05,
   },
   contentText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: width * 0.045,
+    fontWeight: "600",
     color: "#b31616",
-    marginBottom: 15,
+    marginBottom: height * 0.02,
   },
   inputContainer: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: height * 0.03,
   },
   input: {
     width: "100%",
     borderWidth: 1,
-    borderLeftWidth: 8,
-    borderRightWidth: 8,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
     borderStyle: "dotted",
     borderColor: "#0c5702",
-    borderRadius: 10,
-    padding: 10,
-    fontSize: 13,
+    borderRadius: 12,
+    paddingVertical: height * 0.013,
+    paddingHorizontal: width * 0.04,
+    fontSize: width * 0.035,
     color: "#000",
-    backgroundColor: "#f8f9f8",
-    marginBottom: 10,
+    backgroundColor: "#fff",
+    marginBottom: height * 0.013,
   },
   buttonRow: {
     flexDirection: "row",
@@ -166,10 +179,11 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 25,
+    paddingVertical: height * 0.012,
+    borderRadius: 24,
     alignItems: "center",
-    margin: 5,
+    marginHorizontal: 8,
+    marginBottom: 8,
   },
   saveButton: {
     backgroundColor: "#0c5702",
@@ -179,7 +193,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 12,
-    fontWeight: "bold",
+    fontSize: width * 0.035,
+    fontWeight: "400",
   },
 });

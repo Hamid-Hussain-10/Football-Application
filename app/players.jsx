@@ -6,9 +6,14 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Players() {
   const [playerName, setPlayerName] = useState("");
@@ -60,91 +65,107 @@ export default function Players() {
         onPress={() => deletePlayer(item.id)}
         style={styles.deleteBtn}
       >
-        <Ionicons name="trash" size={18} color="#b31616" />
+        <Ionicons name="trash" size={width * 0.045} color="#b31616" />
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={styles.container}
+    >
+      {/* Input Section */}
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Enter Player Name"
           style={styles.input}
           value={playerName}
           onChangeText={setPlayerName}
+          placeholderTextColor="#666"
         />
         <TouchableOpacity onPress={addPlayer} style={styles.addBtn}>
           <Text style={styles.addBtnText}>Add</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Heading */}
       <Text style={styles.heading}>Players</Text>
 
+      {/* Player List */}
       <FlatList
         data={players}
         renderItem={renderPlayer}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContainer}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 10,
+    backgroundColor: "#fff",
+    paddingHorizontal: width * 0.04,
+    paddingTop: height * 0.02,
   },
   inputContainer: {
     flexDirection: "row",
-    width: "100%",
-    padding: 10,
     alignItems: "center",
+    marginBottom: height * 0.02,
   },
   input: {
     flex: 1,
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
+    borderBottomWidth: 1.2,
     borderColor: "#ccc",
+    borderRadius: 6,
+    paddingVertical: height * 0.012,
+    paddingHorizontal: width * 0.03,
+    fontSize: width * 0.037,
+    color: "#000",
+    backgroundColor: "#fcf8f8",
   },
   addBtn: {
-    marginLeft: 10,
+    marginLeft: width * 0.025,
     backgroundColor: "#0c5702",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    paddingVertical: height * 0.010,
+    paddingHorizontal: width * 0.05,
+    borderRadius: 20,
   },
   addBtnText: {
-    fontSize: 12,
+    fontSize: width * 0.035,
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   heading: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginVertical: 10,
+    fontSize: width * 0.045,
+    fontWeight: "500",
+    color: "#000000",
+    textAlign: "center",
+    marginBottom: height * 0.015,
+  },
+  listContainer: {
+    paddingBottom: height * 0.1,
   },
   playerItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRadius: 50,
-    width: "100%",
+    paddingVertical: height * 0.010,
+    paddingHorizontal: width * 0.04,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    backgroundColor: "#f8f9f8",
+    borderRadius: 8,
+    marginBottom: height * 0.01,
   },
   playerText: {
-    fontSize: 14,
+    fontSize: width * 0.04,
+    color: "#333",
   },
   deleteBtn: {
-    padding: 5,
+    padding: width * 0.015,
   },
 });

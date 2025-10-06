@@ -4,7 +4,7 @@
     "slug": "goal-time",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icons.png",
+    "icon": "./assets/images/icon.jpeg",
     "scheme": "football",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icons.png",
+        "foregroundImage": "./assets/images/icon.jpeg",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -22,7 +22,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/icons.png"
+      "favicon": "./assets/images/icon.jpeg"
     },
     "plugins": [
       "expo-router",

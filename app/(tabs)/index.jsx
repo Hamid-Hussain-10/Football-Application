@@ -22,7 +22,7 @@ export default function HomeDrawer() {
         drawerActiveTintColor: "#9f0703",
         drawerInactiveTintColor: "#000",
         headerTitleStyle: {
-          fontSize: 16,
+          fontSize: 18,
         },
         drawerStyle: {
           width: 200,
@@ -33,8 +33,8 @@ export default function HomeDrawer() {
             name="trophy"
             component={Prices}
             size={24}
-            color="#f8f9f8"
-            style={{ marginRight: 12 }}
+            color="#fbff00ff"
+            style={{ marginRight: 14 }}
           />
           </TouchableOpacity>
         ),

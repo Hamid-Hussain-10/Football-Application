@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet } from "react-native";
 
 export default function TabLayout() {
   return (
@@ -10,16 +11,22 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: "#9f0703",
           height: 90,
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          paddingTop: 8,
         },
-        tabBarLabelStyle: { fontSize: 10 },
+        tabBarShowLabel: true,
+        tabBarLabelStyle: { fontSize: 12 },
         headerStyle: {
           backgroundColor: "#9f0703",
-          height: 90,
+          height: 100,
         },
         headerTitleStyle: {
           color: "#f8f9f8",
-          fontSize: 18,
-          fontWeight: "bold",
+          fontSize: 20,
+          fontWeight: "500",
         },
         animation: "fade",
       }}
@@ -29,35 +36,42 @@ export default function TabLayout() {
         options={{
           headerTitle: "Football Tournament Management",
           title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name="home-outline"
-              size={focused ? 24 : 22}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" size={30} color={color} />
           ),
         }}
       />
+
       <Tabs.Screen
         name="TournamentDetails"
         options={{
           headerTitle: "Tournament Details",
-          title: "Tournament",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name="football" size={focused ? 24 : 22} color={color} />
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <View style={styles.container}>
+              <View style={styles.container2}>
+                <Ionicons
+                  name="football"
+                  size={44}
+                  color={color}
+                  style={styles.centericon}
+                />
+              </View>
+            </View>
           ),
         }}
       />
+
       <Tabs.Screen
         name="lineup"
         options={{
           headerTitle: "Line Up Position",
           title: "Lineup",
           animation: "shift",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="soccer-field"
-              size={focused ? 24 : 22}
+              size={30}
               color={color}
             />
           ),
@@ -66,3 +80,25 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: "#ffffff",
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 50,
+  },
+  container2: {
+    width: 75,
+    height: 75,
+    borderRadius: 37.5,
+    backgroundColor: "#0c5702",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+});

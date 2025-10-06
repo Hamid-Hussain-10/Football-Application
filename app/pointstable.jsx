@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
+
+const { width } = Dimensions.get("window");
 
 export default function PointsTable() {
   const [table, setTable] = useState([]);
@@ -105,38 +107,46 @@ export default function PointsTable() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: "#f8f9f8" },
+  container: {
+    flex: 1,
+    padding: width * 0.04,
+    backgroundColor: "#f8f9f8",
+  },
   headerRow: {
     flexDirection: "row",
     borderBottomWidth: 2,
     borderColor: "#51834a",
-    padding: 8,
-    marginBottom: 8,
+    paddingVertical: width * 0.02,
+    paddingHorizontal: width * 0.02,
+    marginBottom: width * 0.03,
     backgroundColor: "#e9f5e6",
+    borderRadius: width * 0.02,
   },
   row: {
     flexDirection: "row",
-    paddingVertical: 10,
+    paddingVertical: width * 0.025,
     borderBottomWidth: 1,
     borderColor: "#ddd",
     alignItems: "center",
+    borderRadius: width * 0.015,
   },
   cell: {
     flex: 1,
     textAlign: "center",
-    fontSize: 13,
-    fontWeight: "500",
+    fontSize: width * 0.035,
+    fontWeight: "400",
     color: "#333",
-    marginLeft: 5,
+    marginLeft: width * 0.01,
   },
   teamCell: {
     flex: 2,
-    fontWeight: "600",
+    fontWeight: "500",
     color: "#222",
     textAlign: "left",
+    fontSize: width * 0.037,
   },
   bold: {
-    fontWeight: "700",
+    fontWeight: "500",
     color: "#000",
   },
 });
