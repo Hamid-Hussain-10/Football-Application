@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   addBtn: {
     marginLeft: width * 0.025,
     backgroundColor: "#0c5702",
-    paddingVertical: height * 0.010,
+    paddingVertical: height * 0.01,
     paddingHorizontal: width * 0.05,
     borderRadius: 20,
   },
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: height * 0.010,
+    paddingVertical: height * 0.01,
     paddingHorizontal: width * 0.04,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
